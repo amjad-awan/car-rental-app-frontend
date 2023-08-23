@@ -1,0 +1,12 @@
+.drawing-app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  canvas {
+    border: 1px solid black;
+  }
+  

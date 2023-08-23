@@ -1,91 +1,132 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+"use client";
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import React, { useEffect, useState } from "react";
+import Layout from "./components/layout/Layout";
+import ReactSelect from "./components/reactselect/ReactSelect";
+import RangeInut from "./components/rangeinput/Range";
+import VehicleCard from "./components/vehicleCard/VehicleCard";
+import Pagination from "./components/pagination/Pagination";
+import BookingDropUp from "./components/bookingDropUp/BookingDropUp";
+import { useVehicleContext } from "./context/vehicleContext";
+import FumesCursor from "./components/CursorGlow/CursorGlow";
+import ModalSelect from "./components/modalselect/modalselect";
+import NotFoundComponent from "./components/notfoundcomponent/NotFoundComponent";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Page() {
+  const { doFilterVehicles, vehicles, isLoading, getVehicles, allVehicles } =
+    useVehicleContext();
+
+  // states
+  const [modal, setModal] = useState(false);
+  const [vehcileType, setVehcileType] = useState(null);
+
+  const options = allVehicles.map((vehcile) => {
+    return { value: vehcile.vehiclemodal, label: vehcile.vehiclemodal };
+  });
+
+  const uniqueObj = {};
+
+  options.forEach((item) => {
+    const key = JSON.stringify(item);
+    uniqueObj[key] = item;
+  });
+
+  const uniqueSelectOptions = [...Object.values(uniqueObj)].sort(
+    (a, b) => b.value - a.value
+  );
+
+  const fetchData = async () => {
+    try {
+      await doFilterVehicles(0);
+      await getVehicles();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const clearFilter=()=>{
+  //   getVehicles()
+  // }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const startLocation = { lat: 31.7749, lng: 74.4194 }; // Replace with your desired start location
+  const endLocation = { lat: 31.0522, lng: 74.2437 }; // Replace with your desired end location
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <>
+      <Layout bennerTittle="Pick your ride">
+        {/* <FumesCursor/> */}
+        <main className="container mx-auto px-3 pb-28 mt-24 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-[30px]">
+          <div className="sm:col-span-12 md:col-span-1 w-[100%] ">
+            <h1 className="bg-[#253241] relative p-5 font-[700] text-[18px] text-[#fff] uppercase">
+              Search a car
+              <div class="w-5 absolute left-[4px] top-[4px] overflow-hidden inline-block">
+                <div class="h-9  bg-[#d01818] rotate-45 transform origin-top-right"></div>
+              </div>
+            </h1>
+            <div className="flex flex-col bg-[#f1f5fa] h-[100%] pt-[30px] px-6">
+              <h3 className=" relative font-[700] mb-3 text-[16px] text-[#253241] uppercase">
+                By modal
+              </h3>
+              <ModalSelect options={uniqueSelectOptions} />
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+              <h3 className=" relative font-[700] mb-3 mt-10 text-[16px] text-[#253241] uppercase">
+                by rent
+              </h3>
+              <RangeInut />
+              {/* <button onClick={clearFilter} className="w-[100%] text-[#fff] mt-[30px] px-1 py-3 bg-[#d01818] uppercase">
+              clear filter
+            </button> */}
+            </div>
+          </div>
+          <div className="relative sm:col-span-12 flex flex-col md:col-span-3 ">
+            {isLoading ? (
+              <div className="absolute inset-0 bg-[#000]"></div>
+            ) : (
+              <>
+                <p className="uppercase text-[22px] font-[600] text-[#253241] mb-6">
+                  total {vehicles?.vehicles?.length} vehicles found{" "}
+                </p>
+                {vehicles?.vehicles?.length === 0 ? (
+                  <NotFoundComponent text="no vehicle found" />
+                ) : (
+                  <div className="grid gap-[30px] grid-cols-1 lg:grid-cols-3">
+                    {vehicles?.vehicles?.map((data, index) => {
+                      return (
+                        <VehicleCard
+                          data={data}
+                          isLoading={isLoading}
+                          setModal={setModal}
+                          key={data?._id}
+                          index={index}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+              </>
+            )}
+            <div className="flex flex-col justify-center  md:flex-row gap-[30px] md:justify-between items-center mt-[100px] px-3">
+              <p className="uppercase text-[15px] font-[600]">
+                {vehicles?.vehicles?.length} at page {vehicles?.currentPage} of
+                total {vehicles?.total} vehicles{" "}
+              </p>
+              <Pagination
+                itemsPerPage={6}
+                filteredVehicles={vehicles}
+                allVehicles={allVehicles}
+              />
+            </div>
+          </div>
+        </main>
+      </Layout>
+      {modal && <BookingDropUp setModal={setModal} />}
+    </>
+  );
 }

@@ -1,0 +1,10 @@
+.registerHead
+{
+    background-image: url("https://revus.tm-colors.info/rent/wp-content/plugins/youzify/includes/public/assets/images/geopattern.png");
+    height: 300px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:cover;
+    position: relative;
+}

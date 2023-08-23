@@ -1,0 +1,11 @@
+.bg-imag {
+  background: url("../../assets/images/page-heading-image.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 300px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
