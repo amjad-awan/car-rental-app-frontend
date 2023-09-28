@@ -19,7 +19,7 @@ export default function AuthProvider({ children }) {
     try {
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/auth/register-user`,
+        `https://rental-app-backend.vercel.app/api/v1/auth/register-user`,
         data
       );
       setLoading(false);
@@ -34,7 +34,7 @@ export default function AuthProvider({ children }) {
     try {
       setLoading(true);
       const { data } = await axios.post(
-        `http://localhost:5000/api/v1/auth/login-user`,
+        `https://rental-app-backend.vercel.app/api/v1/auth/login-user`,
         comingdata
       );
       if (data) {
@@ -60,13 +60,15 @@ export default function AuthProvider({ children }) {
     } else {
       router.push("/login");
     }
-  },[]);
+  }, []);
 
   return (
-    <UserContext.Provider value={{user,isError,setUser,loading,registerUser,loginUser}}>
+    <UserContext.Provider
+      value={{ user, isError, setUser, loading, registerUser, loginUser }}
+    >
       {children}
     </UserContext.Provider>
-  )
+  );
 }
 
 // Make useUserContext Hook to easily use our context throughout the application

@@ -28,7 +28,7 @@ export const useCalCulateDistance = () => {
     const getAllVehicles = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/v1/vehcile/get-vehicles"
+          "https://rental-app-backend.vercel.app/api/v1/vehcile/get-vehicles"
         );
 
         return data?.vehicles;
@@ -41,7 +41,7 @@ export const useCalCulateDistance = () => {
     const getVehicleLatLong = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/v1/vehiclelatlong/get-latlong"
+          "https://rental-app-backend.vercel.app/api/v1/vehiclelatlong/get-latlong"
         );
         return data?.latlong;
       } catch (error) {
@@ -52,8 +52,9 @@ export const useCalCulateDistance = () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         const { data } = await axios.get(
-          `http://localhost:5000/api/v1/userlatlong/get-userlatlong/${user._id}`
+          `https://rental-app-backend.vercel.app/api/v1/userlatlong/get-userlatlong/${user._id}`
         );
+
         return data?.latlong;
       } catch (error) {
         console.log("error", error);
@@ -63,7 +64,7 @@ export const useCalCulateDistance = () => {
     const addVehicleLatLong = async (location) => {
       try {
         const response = await axios.post(
-          `http://localhost:5000/api/v1/vehiclelatlong/add-latlong`,
+          `https://rental-app-backend.vercel.app/api/v1/vehiclelatlong/add-latlong`,
           { lat: location.lat, long: location.long, id: location.id }
         );
       } catch (error) {
@@ -109,10 +110,9 @@ export const useCalCulateDistance = () => {
         if (typeof window !== "undefined" && "geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              // Retrieve the latitude and longitude from the position object
               addVehicleLatLong({
-                lat: position.coords.latitude,
-                long: position.coords.longitude,
+                lat: position?.coords?.latitude,
+                long: position?.coords?.longitude,
                 id: vehicle._id,
               });
               //   setLocation({
@@ -135,19 +135,21 @@ export const useCalCulateDistance = () => {
       // Simulate random location updates for your position
 
       const userLatLongList = await getUserLatLong();
-        setUserLatLongs({lat:userLatLongList.lat,lng:userLatLongList.long});
+      console.log("userLatLongList", userLatLongList)
+
+      setUserLatLongs({ lat: userLatLongList.lat, lng: userLatLongList.long });
     }, 5000);
 
     return () => clearInterval(interval);
   }, [vehicleLocation]);
 
   const calculateDistance = (location1, location2) => {
-    if (!location1||!location2) return 0;
+    if (!location1 || !location2) return 0;
     const earthRadius = 6371;
     const { lat: lat1, lng: lng1 } = location1;
     const { lat: lat2, lng: lng2 } = location2;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLng = ((lng2 - lng1) * Math.PI) / 180
+    const dLng = ((lng2 - lng1) * Math.PI) / 180;
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos((lat1 * Math.PI) / 180) *
@@ -157,7 +159,7 @@ export const useCalCulateDistance = () => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = earthRadius * c;
     return distance;
-  }
+  };
 
   return {
     distance,
@@ -166,8 +168,8 @@ export const useCalCulateDistance = () => {
     userLatLongs,
     vehiclePath,
     selectedVehiclePath,
-  }
-}
+  };
+};
 
 export const useLoading = () => {
   const [isLoading, setIsLoading] = useState(false);

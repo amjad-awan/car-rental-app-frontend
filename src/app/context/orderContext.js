@@ -13,14 +13,12 @@ export default function OrdersProvider({ children }) {
   const [vehicleId, setVehicleId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
   //add order
   const addOrder = async (vehicleOwnerId) => {
-    console.log("vehicleOwnerId", vehicleOwnerId)
     try {
       setIsLoading(true);
       const user = JSON.parse(localStorage.getItem("user"));
-      await axios.post("http://localhost:5000/api/v1/order/add-order", {
+      await axios.post(`https://rental-app-backend.vercel.app/api/v1/order/add-order`, {
         username: user.username,
         userId: user._id,
         vehicleOwnerId: vehicleOwnerId,
@@ -40,12 +38,13 @@ export default function OrdersProvider({ children }) {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const { data } = await axios.get(
-        `http://localhost:5000/api/v1/order/get-orders/${user._id}`,{
-          params:{
-            vehicleid:user.vehicleid,
-          }
+        `https://rental-app-backend.vercel.app/api/v1/order/get-orders/${user._id}`,
+        {
+          params: {
+            vehicleid: user.vehicleid,
+          },
         }
-      )
+      );
       setOrders(data.orders);
       setIsLoading(false);
     } catch (error) {
@@ -54,22 +53,22 @@ export default function OrdersProvider({ children }) {
     }
   };
 
-
-   //get user bookings
-   const getUserBookings = async () => {
+  //get user bookings
+  const getUserBookings = async () => {
     setIsLoading(true);
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const { data } = await axios.get(
-        `http://localhost:5000/api/v1/order/get-user-bookings`,{
-          params:{
-            vehicleid:user.vehicleid,
-            userId:user._id
-          }
+        `https://rental-app-backend.vercel.app/api/v1/order/get-user-bookings`,
+        {
+          params: {
+            vehicleid: user.vehicleid,
+            userId: user._id,
+          },
         }
-      )
+      );
 
-      console.log("data 74", data)
+      console.log("data 74", data);
       setUserOrders(data.orders);
       setIsLoading(false);
     } catch (error) {
@@ -79,18 +78,17 @@ export default function OrdersProvider({ children }) {
   };
 
   // update order
-  const updateOrder = async (orderId, data,vehicleid) => {
+  const updateOrder = async (orderId, data, vehicleid) => {
     console.log(orderId, data);
     try {
       await axios.put(
-        `http://localhost:5000/api/v1/order/update-order/${orderId}`,
-        { orderstatus: data,vehicleid }
+        `https://rental-app-backend.vercel.app/api/v1/order/update-order/${orderId}`,
+        { orderstatus: data, vehicleid }
       );
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <OrdersContext.Provider

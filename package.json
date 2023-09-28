@@ -5,12 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next dev",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.19.0",
     "axios": "^1.4.0",
+    "debug": "^4.3.4",
     "encoding": "^0.1.13",
     "firebase": "^9.23.0",
     "formik": "^2.4.2",

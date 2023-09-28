@@ -21,10 +21,10 @@ export default function VehicleProvider({ children }) {
   const addVehicle = async (data) => {
     try {
       setIsLoading(true);
-      setIsLoading(true)
+      setIsLoading(true);
       const { picture, cloudinary_picture_id } = await uploadImage(data?.image);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/vehcile/add`,
+        `https://rental-app-backend.vercel.app/api/v1/vehcile/add`,
         {
           ...data,
           cloudinarypictureId: cloudinary_picture_id,
@@ -35,7 +35,7 @@ export default function VehicleProvider({ children }) {
       toastAlert("success", "vehicle added successfully");
     } catch (error) {
       setIsLoading(false);
-      setIsLoading(true)
+      setIsLoading(true);
       toastAlert("error", "error while adding vehicle");
     }
   };
@@ -72,26 +72,24 @@ export default function VehicleProvider({ children }) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/api/v1/vehcile/get-vehicles`
+        `https://rental-app-backend.vercel.app/api/v1/vehcile/get-vehicles`
       );
-
       setAllVehicles(response?.data?.vehicles);
       // setVehicles(response?.data);
-
       setIsLoading(false);
       return await response?.data?.vehicles;
-    } catch (error) {
+    }catch (error) {
       setIsLoading(false);
       console.log("error", error);
     }
-  };
+  }
 
   const getSingleVehicle = async (vehicleId) => {
     try {
       setIsLoading(true);
       console.log("vehicleId", vehicleId);
       const { data } = await axios.get(
-        `http://localhost:5000/api/v1/vehcile/get-vehicle/${vehicleId}`
+        `https://rental-app-backend.vercel.app/api/v1/vehcile/get-vehicle/${vehicleId}`
       );
       setSingleVehicle(data?.vehicle);
       setIsLoading(false);
@@ -101,13 +99,16 @@ export default function VehicleProvider({ children }) {
     }
   };
 
-  const updateVehicle = async (vehicleId,cloudinarypictureId,image,  data ) => {
+  const updateVehicle = async (vehicleId, cloudinarypictureId, image, data) => {
     try {
       setIsLoading(true);
       console.log("vehicleId", vehicleId);
-      const { picture, cloudinary_picture_id } = await updateImage(image, cloudinarypictureId);
+      const { picture, cloudinary_picture_id } = await updateImage(
+        image,
+        cloudinarypictureId
+      );
       const response = await axios.put(
-        `http://localhost:5000/api/v1/vehcile/update-vehicle/${vehicleId}`,
+        `https://rental-app-backend.vercel.app/api/v1/vehcile/update-vehicle/${vehicleId}`,
         {
           ...data,
           cloudinarypictureId: cloudinary_picture_id,
@@ -127,8 +128,8 @@ export default function VehicleProvider({ children }) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/api/v1/vehcile/get-filtered-vehicles/${page}`,
-        {cache: "no-store"}
+        `https://rental-app-backend.vercel.app/api/v1/vehcile/get-filtered-vehicles/${page}`,
+        { cache: "no-store" }
       );
       setVehicles(response?.data);
       setIsLoading(false);
@@ -143,7 +144,7 @@ export default function VehicleProvider({ children }) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/api/v1/vehcile/get-price-filtered-vehicles`,
+        `https://rental-app-backend.vercel.app/api/v1/vehcile/get-price-filtered-vehicles`,
         {
           params: {
             minPrice: prices.minPrice,
@@ -165,7 +166,7 @@ export default function VehicleProvider({ children }) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/api/v1/vehcile/get-vehicles-by-modal/${vehiclemodal}`
+        `https://rental-app-backend.vercel.app/api/v1/vehcile/get-vehicles-by-modal/${vehiclemodal}`
       );
       setVehicles(response?.data);
 

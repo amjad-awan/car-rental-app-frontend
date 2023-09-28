@@ -41,9 +41,8 @@ export default function LatLongProvider({ children }) {
   };
   const handleVehicleLatLong = async (location) => {
     try {
-      console.log("location ===44 ", location);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/vehiclelatlong/add-latlong`,
+        `https://rental-app-backend.vercel.app/api/v1/vehiclelatlong/add-latlong`,
         { lat: location.lat, long: location.long, id: location.id }
       );
     } catch (error) {
@@ -54,7 +53,7 @@ export default function LatLongProvider({ children }) {
   const getSingleVehicleLatLong = async (vehicId) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/v1/vehiclelatlong/get-vehiclelatlong/${vehicId}`
+        `https://rental-app-backend.vercel.app/api/v1/vehiclelatlong/get-vehiclelatlong/${vehicId}`
       );
       setVehicleLatLongs({
         lat: data?.latlong.lat,
@@ -76,7 +75,7 @@ export default function LatLongProvider({ children }) {
           async (position) => {
             // Retrieve the latitude and longitude from the position object
             const response = await axios.post(
-              `http://localhost:5000/api/v1/userlatlong/add-userlatlong`,
+              `https://rental-app-backend.vercel.app/api/v1/userlatlong/add-userlatlong`,
               {
                 lat: position.coords.latitude,
                 long: position.coords.longitude,
@@ -95,7 +94,7 @@ export default function LatLongProvider({ children }) {
     } catch (error) {
       console.log("error", error);
     }
-  }
+  };
 
   return (
     <LatLongContext.Provider
