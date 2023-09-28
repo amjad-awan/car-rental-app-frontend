@@ -2,7 +2,7 @@
 import Head from "next/head";
 import "./globals.css";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "./context/authContext";
 import VehicleProvider from "./context/vehicleContext";
